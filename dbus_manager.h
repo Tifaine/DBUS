@@ -36,8 +36,6 @@ public:
 
   ~DBUS_Manager();
 
-
-
 private:
   std::condition_variable cond_var;
   std::mutex mut;

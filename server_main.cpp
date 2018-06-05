@@ -6,7 +6,6 @@ int main()
   DBUS_Manager* manager;
   manager = new DBUS_Manager();
 
-
   while(1)
   {
 
