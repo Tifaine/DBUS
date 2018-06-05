@@ -12,6 +12,8 @@
 #include <string>
 #include <thread>
 #include <iostream>
+#include <condition_variable>
+#include <vector>
 #include <dbus/dbus.h>
 
 /*!
@@ -49,6 +51,15 @@ public:
 
   int init_server();
 
+  std::condition_variable* getCV(){return cv;}
+  void setCV(std::condition_variable* _cv){cv = _cv;}
+
+  std::vector<std::string>* getListMessage(){return listMessages;}
+
+  void setNewMessage(bool* _nm){newMessage = _nm;}
+  bool* getNewMessage(){return newMessage;}
+
+
 private:
   DBusConnection *conn;
   int run();
@@ -57,9 +68,11 @@ private:
   std::string nameOnBus;
   std::string nameObject;
   std::string functionName;
-
+  bool* newMessage;
   std::thread* threadDBus;
   DBusObjectPathVTable server_vtable;
+  std::vector<std::string>* listMessages;
+  std::condition_variable *cv;
 
 };
 #endif //DBUS_SERVER_H
