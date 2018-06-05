@@ -12,13 +12,13 @@
 #include "dbus_server.h"
 
 /*!
-* \file dbus_server.h
-* \brief DBUS_Server class.
+* \file dbus_manager.h
+* \brief DBUS_Manager class.
 * \author GUYOT Tifaine
 * \version 0.1
 */
 
-/*! \class Server_DBUS
+/*! \class DBUS_Manager
 * \brief Class which manage the incoming DBUS message.
 *
 *  This class manage all the incoming message and inform the MTPS when he received a message.

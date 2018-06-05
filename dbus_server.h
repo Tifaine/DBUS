@@ -53,12 +53,9 @@ public:
 
   std::condition_variable* getCV(){return cv;}
   void setCV(std::condition_variable* _cv){cv = _cv;}
-
   std::vector<std::string>* getListMessage(){return listMessages;}
-
   void setNewMessage(bool* _nm){newMessage = _nm;}
   bool* getNewMessage(){return newMessage;}
-
 
 private:
   DBusConnection *conn;

@@ -15,7 +15,6 @@ DBUS_Manager::DBUS_Manager()
   serv->setCV(&cond_var);
   serv->setNewMessage(&isDataAvailable);
   serv->init_server();
-
   threadManagerDBus = new std::thread(&DBUS_Manager::run,this);
 }
 
@@ -34,7 +33,7 @@ void DBUS_Manager::run()
     while (!serv->getListMessage()->empty())
     {
       std::cout<<(serv->getListMessage()->back())<<std::endl;
-
+      //Do whatever you want with your message here !
 
 
       serv->getListMessage()->pop_back();
