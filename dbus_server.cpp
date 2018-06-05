@@ -10,10 +10,12 @@
 
 #include "dbus_server.h"
 
-Server_DBUS::Server_DBUS(std::string _interfaceName, std::string _nameOnBus)
+Server_DBUS::Server_DBUS(std::string _interfaceName, std::string _nameOnBus, std::string _nameObject, std::string _functionName)
 {
   nameOnBus = _nameOnBus;
-  interfaceName = _interfaceName.c_str();
+  interfaceName = _interfaceName;
+  nameObject = _nameObject;
+  functionName = _functionName;
 
 }
 
@@ -35,22 +37,19 @@ int Server_DBUS::init_server()
 
     return EXIT_FAILURE;
   }
-  std::string _nomAgent = "org.agentTheseTifG.";
   std::string firstNomAgent = nameOnBus;
   int indiceName = 0;
-  //nomAgent.append("AMS");
 
-  rv = dbus_bus_request_name(conn, (_nomAgent + nameOnBus).c_str(), DBUS_NAME_FLAG_DO_NOT_QUEUE  , &err);
+  rv = dbus_bus_request_name(conn, (nameOnBus).c_str(), DBUS_NAME_FLAG_DO_NOT_QUEUE  , &err);
   while (rv != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
 
     dbus_error_free(&err);
     indiceName++;
     nameOnBus = firstNomAgent + std::to_string(indiceName);
-    rv = dbus_bus_request_name(conn, (_nomAgent + nameOnBus).c_str(), DBUS_NAME_FLAG_DO_NOT_QUEUE  , &err);
+    rv = dbus_bus_request_name(conn, (nameOnBus).c_str(), DBUS_NAME_FLAG_DO_NOT_QUEUE  , &err);
   }
 
-  std::string objectName = "/org/agentTheseTifG/"+interfaceName;
-  if (!dbus_connection_register_object_path(conn, objectName.c_str(), &server_vtable, NULL)) {
+  if (!dbus_connection_register_object_path(conn, nameObject.c_str(), &server_vtable, NULL)) {
     fprintf(stderr, "Failed to register a object path for 'TestObject'\n");
     return EXIT_FAILURE;
   }
@@ -66,7 +65,7 @@ int Server_DBUS::run()
   {
     dbus_connection_read_write_dispatch(conn, -1);
     message = dbus_connection_pop_message(conn);
-    if (dbus_message_is_method_call(message, "org.agentTheseTifG.SMAInterface", "Contact"))
+    if (dbus_message_is_method_call(message, interfaceName.c_str(), functionName.c_str()))
     {
       const char *msg;
       DBusMessageIter args;

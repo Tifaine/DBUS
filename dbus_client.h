@@ -32,7 +32,7 @@
 *  \return 1 if init is ok, -1 if it is not.
 *
 */
-int initDBus();
+int initDBus(std::string _interfaceName, std::string _objectName, std::string _functionName);
 
 /*!
 *  \fn sendMessageDBUS(std::string messageToSend)

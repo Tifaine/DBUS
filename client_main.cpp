@@ -3,8 +3,8 @@
 
 int main()
 {
-  initDBus();
-  sendMessageDBUS("Wololo","TitiFirst");
-  
+  initDBus("org.interfaceGit","/interfaceGit/Contact","Contact");
+  sendMessageDBUS("Wololo","interfaceGit.Alice");
+
   return 0;
 }

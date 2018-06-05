@@ -37,7 +37,7 @@ public:
   *  \param _interfaceName : Name of the dbus interface to use
   *  \param _nameOnBus : Name of the agent. Use for the registration on the dbus.
   */
-  Server_DBUS(std::string _interfaceName, std::string _nameOnBus);
+  Server_DBUS(std::string _interfaceName, std::string _nameOnBus, std::string _nameObject, std::string _functionName);
 
   /*!
   *  \brief Destructor
@@ -55,8 +55,11 @@ private:
 
   std::string interfaceName;
   std::string nameOnBus;
+  std::string nameObject;
+  std::string functionName;
+
   std::thread* threadDBus;
   DBusObjectPathVTable server_vtable;
-  
+
 };
 #endif //DBUS_SERVER_H

@@ -3,7 +3,7 @@
 #include <unistd.h>
 int main()
 {
-  Server_DBUS serv("ContactSMA","TitiFirst");
+  Server_DBUS serv("org.interfaceGit","interfaceGit.Alice","/interfaceGit/Contact","Contact");
   serv.init_server();
 
   while(1)
