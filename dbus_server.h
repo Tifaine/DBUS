@@ -57,6 +57,8 @@ public:
   void setNewMessage(bool* _nm){newMessage = _nm;}
   bool* getNewMessage(){return newMessage;}
 
+  std::string getNameOnBus(){return nameOnBus;}
+
 private:
   DBusConnection *conn;
   int run();

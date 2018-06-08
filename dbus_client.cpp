@@ -6,15 +6,19 @@
 *
 * Author: Guyot Tifaine <tifaine.guyot@st.com>
 */
-
-
 #include "dbus_client.h"
 #include <iostream>
 
-GDBusConnection *connClient;
-std::string interfaceName;
-std::string objectName;
-std::string functionName;
+DBUS_Client::DBUS_Client(std::string _interfaceName, std::string _objectName, std::string _functionName)
+{
+  initDBus(_interfaceName,_objectName,_functionName);
+}
+
+DBUS_Client::~DBUS_Client()
+{
+
+}
+
 /*!
 *  \fn initDBus()
 *  \brief Init the dbus client
@@ -22,17 +26,21 @@ std::string functionName;
 *  \return 1 if init is ok, -1 if it is not.
 *
 */
-int initDBus(std::string _interfaceName, std::string _objectName, std::string _functionName)
+int DBUS_Client::initDBus(std::string _interfaceName, std::string _objectName, std::string _functionName)
 {
-  GError *error = NULL;
+  DBusError err;
   interfaceName = _interfaceName;
   objectName = _objectName;
   functionName = _functionName;
+  dbus_error_init(&err);
 
-  connClient = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &error);
-  if(!connClient)
-  {
-    fprintf(stderr, "Failed to get a session DBus connection: %s\n", error->message);
+
+  /* connect to the daemon bus */
+  connClient = dbus_bus_get(DBUS_BUS_SESSION, &err);
+  if (!connClient) {
+    fprintf(stderr, "Failed to get a session DBus connection: %s\n", err.message);
+    dbus_error_free(&err);
+
     return -1;
   }
 
@@ -49,14 +57,13 @@ int initDBus(std::string _interfaceName, std::string _objectName, std::string _f
 *  \return true if the message is sent, -1 if not;
 *
 */
-int sendMessageDBUS(std::string messageToSend, std::string nomAgentToSend)
+int DBUS_Client::sendMessageDBUS(std::string messageToSend, std::string nomAgentToSend)
 {
-  GError *error = NULL;
-  GDBusMessage *msg;
-  msg = g_dbus_message_new_method_call (nomAgentToSend.c_str(),
+  DBusMessage *msg;
+  msg = dbus_message_new_method_call (nomAgentToSend.c_str(),
   objectName.c_str(), interfaceName.c_str(), functionName.c_str());
-
-  g_dbus_message_set_body (msg, g_variant_new ("(s)", messageToSend.c_str()));
-  g_dbus_connection_send_message(connClient,msg,G_DBUS_SEND_MESSAGE_FLAGS_NONE,-NULL,&error);
+  const char *v_STRING = messageToSend.c_str();
+  dbus_message_append_args(msg,DBUS_TYPE_STRING,&v_STRING);
+  std::cout<<dbus_connection_send(connClient,msg,NULL)<<std::endl;
   return 1;
 }
