@@ -9,8 +9,12 @@
 
 #ifndef DBUS_MANAGER_H
 #define DBUS_MANAGER_H
+#include <vector>
+#include <iterator> // std::ostream_iterator
 #include "dbus_server.h"
 #include "dbus_client.h"
+#include "../Shared_Memory/sharedMemory.h"
+
 
 /*!
 * \file dbus_manager.h
@@ -39,7 +43,7 @@ public:
     std::vector<std::string> *_listMessagesParent);
   ~DBUS_Manager();
 
-  void envoiMessage_DBUS(std::string messageToSend, std::string nomAgentToSend);
+  void envoiMessage_DBUS(std::string messageToSend, std::string nomAgentToSend,std::string interfaceToSend);
 
   bool* getParentWatcher(){return parentWatcher;}
 

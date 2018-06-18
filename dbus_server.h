@@ -56,7 +56,6 @@ public:
   std::vector<std::string>* getListMessage(){return listMessages;}
   void setNewMessage(bool* _nm){newMessage = _nm;}
   bool* getNewMessage(){return newMessage;}
-
   std::string getNameOnBus(){return nameOnBus;}
 
 private:
@@ -69,9 +68,9 @@ private:
   std::string functionName;
   bool* newMessage;
   std::thread* threadDBus;
-  DBusObjectPathVTable server_vtable;
   std::vector<std::string>* listMessages;
   std::condition_variable *cv;
+
 
 };
 #endif //DBUS_SERVER_H

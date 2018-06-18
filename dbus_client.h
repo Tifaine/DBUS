@@ -12,7 +12,7 @@
 
 #include <string>
 #include <stdio.h>
-#include <dbus/dbus.h>
+#include <gio/gio.h>
 
 /*!
 * \file dbus_client.h
@@ -43,10 +43,14 @@ public:
   *  \return true if the message is sent, -1 if not;
   *
   */
-  int sendMessageDBUS(std::string messageToSend, std::string nomAgentToSend);
+  int sendMessageDBUS(std::string messageToSend, std::string nomAgentToSend,std::string interfaceToSend);
 
 private:
-  DBusConnection *connClient;
+  GDBusProxy *proxy;
+	GDBusConnection *connClient;
+	GError *error = NULL;
+
+
   std::string interfaceName;
   std::string objectName;
   std::string functionName;
